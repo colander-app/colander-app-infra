@@ -11,7 +11,7 @@ terraform {
     organization = "colanderapp"
 
     workspaces {
-      name = "colander-app-prod"
+      name = "colander-app-dev"
     }
   }
 }

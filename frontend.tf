@@ -17,6 +17,7 @@ data "aws_route53_zone" "this" {
 }
 resource "aws_acm_certificate" "this" {
   domain_name       = local.stage_domain
+  subject_alternative_names = [ "*.${local.stage_domain}" ]
   validation_method = "DNS"
 }
 resource "aws_route53_record" "tls_validation" {
@@ -97,7 +98,7 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   custom_error_response {
-    error_code         = "400"
+    error_code         = "403"
     response_code      = "200"
     response_page_path = "/index.html"
   }
@@ -115,7 +116,7 @@ resource "aws_cloudfront_distribution" "this" {
       }
     }
 
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
     default_ttl            = 3600
     max_ttl                = 86400
